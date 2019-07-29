@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
-    public GameObject hazard;
+    public GameObject [] hazards;
     public Vector3 spawnValues;
     public int hazardCount;
     public float spawnWait;
@@ -15,6 +15,7 @@ public class GameController : MonoBehaviour
     public Text scoreText;
     public Text restartText;
     public Text gameOverText;
+    public Text winText;
     private int score;
     private bool gameOver;
     private bool restart;
@@ -25,6 +26,7 @@ public class GameController : MonoBehaviour
         restart = false;
         restartText.text = "";
         gameOverText.text = "";
+        winText.text = "";
         score = 0;
         UpdateScore();
         StartCoroutine (SpawnWaves ());
@@ -37,7 +39,7 @@ void Update ()
             }
         if (restart)
         {
-            if (Input.GetKeyDown (KeyCode.R))
+            if (Input.GetKeyDown (KeyCode.P))
             {
                 SceneManager.LoadScene("ShooterScene");
             }
@@ -53,7 +55,8 @@ void Update ()
         while (true)
         {
             for (int i = 0; i < hazardCount; i++)
-            {
+            {   
+                GameObject hazard = hazards[Random.Range (0,hazards.Length)];
                 Vector3 spawnPosition = new Vector3 (Random.Range (-spawnValues.x, spawnValues.x), spawnValues.y, spawnValues.z);
                 Quaternion spawnRotation = Quaternion.identity;
                 Instantiate (hazard, spawnPosition, spawnRotation);
@@ -63,7 +66,7 @@ void Update ()
 
             if (gameOver)
             {
-                restartText.text = "Press 'R' for restart";
+                restartText.text = "Press 'P' for restart";
                 restart = true;
                 break;
             }
@@ -77,12 +80,19 @@ public void AddScore(int newScoreValue)
 
     void UpdateScore()
     {
-        scoreText.text = "Score: " + score;
+        scoreText.text = "Point: " + score;
+        if (score >= 100)
+        {
+            winText.text = "You win!";
+            gameOverText.text = "You win! Game Created by Cynthia";
+            gameOver = true;
+            restart = true;
+        }
     }
 
     public void GameOver ()
     {
-        gameOverText.text = "Game Over!";
+        gameOverText.text = "GAME OVER! GAME CREATED BY CYNTHIA";
         gameOver = true; 
     }
 }
