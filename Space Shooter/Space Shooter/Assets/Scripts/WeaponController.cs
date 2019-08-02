@@ -10,6 +10,8 @@ public class WeaponController : MonoBehaviour
 	public float delay;
     private AudioSource audioSource;
 
+
+
     void Start()
     {
         audioSource = GetComponent<AudioSource> ();

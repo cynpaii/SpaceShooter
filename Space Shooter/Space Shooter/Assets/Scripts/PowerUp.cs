@@ -13,12 +13,14 @@ public class PowerUp : MonoBehaviour
 
     public MeshCollider invincible;
     private PlayerController playerController;
+    private GameController gameController;
  void Start ()
  {
      gameOver = false;
      StartCoroutine (PowerUpWaves());
      invincible = GetComponent <MeshCollider> ();
-     PlayerController playerController = GetComponent<PlayerController>();
+     playerController = GetComponent<PlayerController>();
+     gameController = GetComponent<GameController>();
  }
  void Update ()
  {
@@ -29,10 +31,11 @@ public class PowerUp : MonoBehaviour
      if (other.tag == "Gem")
      {
          StartCoroutine (PowerUpWearOff(5f));
+    
      }
      if (other.tag == "PowerUp2")
      {
-         playerController.fireRate = 0.03f;
+         StartCoroutine (PowerUpWearOff2(3f));
      }
 
      
@@ -59,7 +62,14 @@ public class PowerUp : MonoBehaviour
      invincible.enabled = false;
      yield return new WaitForSeconds(waitTime);
      invincible.enabled = true;
- }
- 
+     gameController.powerupText.text = "";
     
+ }
+ IEnumerator PowerUpWearOff2(float waitTime)
+ {
+
+     playerController.fireRate = 0.08f;
+     yield return new WaitForSeconds(waitTime);
+     playerController.fireRate = 0.25f;
+ }
 }

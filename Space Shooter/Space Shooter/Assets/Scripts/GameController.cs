@@ -19,6 +19,7 @@ public class GameController : MonoBehaviour
     public Text restartText;
     public Text gameOverText;
     public Text winText;
+    public Text powerupText;
     public AudioClip startMusic;
     public AudioClip winMusic;
     public AudioClip loseMusic;
@@ -34,6 +35,7 @@ public class GameController : MonoBehaviour
         restartText.text = "";
         gameOverText.text = "";
         winText.text = "";
+        powerupText.text= "";
         score = 0;
         UpdateScore();
         StartCoroutine (SpawnWaves ());
