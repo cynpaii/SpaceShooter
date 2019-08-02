@@ -33,6 +33,8 @@ public class PlayerController : MonoBehaviour
             nextFire = Time.time + fireRate;
             Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
             audioSource.Play();
+            
+     
         }
      }
      void FixedUpdate()
@@ -52,4 +54,18 @@ public class PlayerController : MonoBehaviour
 
           rb.rotation = Quaternion.Euler(0.0f, 0.0f, rb.velocity.x * -tilt);
      }
+
+     void OnTriggerEnter(Collider other)
+     {
+          if (other.gameObject.CompareTag("Gem"))
+          {
+               other.gameObject.SetActive (false);  
+          }
+          if (other.gameObject.CompareTag("PowerUp2"))
+          {
+               other.gameObject.SetActive (false);  
+          }
+          
+     }
+   
 }

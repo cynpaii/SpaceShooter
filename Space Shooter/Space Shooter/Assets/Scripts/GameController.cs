@@ -6,16 +6,23 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour
 {
     public GameObject [] hazards;
+    public ParticleSystem ps1;
+    public ParticleSystem ps2;
     public Vector3 spawnValues;
     public int hazardCount;
     public float spawnWait;
     public float startWait;
     public float waveWait;
+    private float t = 0.0f;
 
     public Text scoreText;
     public Text restartText;
     public Text gameOverText;
     public Text winText;
+    public AudioClip startMusic;
+    public AudioClip winMusic;
+    public AudioClip loseMusic;
+    public AudioSource MusicSource;
     private int score;
     private bool gameOver;
     private bool restart;
@@ -30,6 +37,9 @@ public class GameController : MonoBehaviour
         score = 0;
         UpdateScore();
         StartCoroutine (SpawnWaves ());
+        MusicSource.clip=startMusic;
+        MusicSource.Play();
+    
     }
 void Update ()
     {
@@ -41,7 +51,7 @@ void Update ()
         {
             if (Input.GetKeyDown (KeyCode.P))
             {
-                SceneManager.LoadScene("ShooterScene");
+                SceneManager.LoadScene("Main");
             }
             if (Input.GetKeyDown (KeyCode.Escape))
             {
@@ -69,6 +79,7 @@ void Update ()
                 restartText.text = "Press 'P' for restart";
                 restart = true;
                 break;
+            
             }
         }
     }
@@ -81,12 +92,20 @@ public void AddScore(int newScoreValue)
     void UpdateScore()
     {
         scoreText.text = "Point: " + score;
+        
         if (score >= 100)
         {
             winText.text = "You win!";
             gameOverText.text = "You win! Game Created by Cynthia";
             gameOver = true;
             restart = true;
+            MusicSource.clip = winMusic;
+            MusicSource.Play();
+            var main = ps1.main;
+                main.simulationSpeed = Mathf.Lerp(1 , 10 , 1);
+                var secondary = ps2.main;
+                secondary.simulationSpeed = Mathf.Lerp(1 , 10 , 2);
+                t += 0.3f * Time.deltaTime;
         }
     }
 
@@ -94,5 +113,7 @@ public void AddScore(int newScoreValue)
     {
         gameOverText.text = "GAME OVER! GAME CREATED BY CYNTHIA";
         gameOver = true; 
+        MusicSource.clip = loseMusic;
+            MusicSource.Play();
     }
 }
